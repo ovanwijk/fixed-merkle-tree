@@ -104,7 +104,7 @@ export class BaseTree {
    * @returns {{pathElements: Object[], pathIndex: number[]}} An object containing adjacent elements and left-right index
    */
   path(index: number): ProofPath {
-    if (isNaN(Number(index)) || index < 0 || index >= this._layers[0].length) {
+    if (isNaN(Number(index)) || index < 0 || index >= this.capacity) {
       throw new Error('Index out of bounds: ' + index)
     }
     let elIndex = +index
@@ -114,7 +114,7 @@ export class BaseTree {
     for (let level = 0; level < this.levels; level++) {
       pathIndices[level] = elIndex % 2
       const leafIndex = elIndex ^ 1
-      if (leafIndex < this._layers[level].length) {
+      if (this._layers[level][leafIndex]) {
         pathElements[level] = this._layers[level][leafIndex]
         pathPositions[level] = leafIndex
       } else {
@@ -158,7 +158,7 @@ export class BaseTree {
   protected _processUpdate(index: number) {
     for (let level = 1; level <= this.levels; level++) {
       index >>= 1
-      const left = this._layers[level - 1][index * 2]
+      const left = this._layers[level - 1][index * 2] || this._zeros[level - 1]
       const right = index * 2 + 1 < this._layers[level - 1].length
         ? this._layers[level - 1][index * 2 + 1]
         : this._zeros[level - 1]
