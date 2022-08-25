@@ -91,7 +91,7 @@ export class BaseTree {
    * @param element Updated element value
    */
   update(index: number, element: Element) {
-    if (isNaN(Number(index)) || index < 0 || index > this._layers[0].length || index >= this.capacity) {
+    if (isNaN(Number(index)) || index < 0 || index >= this.capacity) {
       throw new Error('Insert index out of bounds: ' + index)
     }
     this._layers[0][index] = element
